@@ -16,7 +16,13 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "config": {
+        "googleMaps": {
+          "apiKey" :"AIzaSyDLk4ZH2qHrHrz48zKqmx-hm51FuOPEtPE"
+        }
+
+      }
     },
     "web": {
       "bundler": "metro",

@@ -1,13 +1,24 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Box, Typography, Alert } from '@mui/material';
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import {
+  TextField,
+  Button,
+  Typography,
+  Alert,
+  Box,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  Paper,
+} from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from '../api/axios';
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const [error, setError] = React.useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const formik = useFormik({
     initialValues: {
@@ -22,47 +33,93 @@ const LoginForm = () => {
       try {
         const res = await axios.post('/login', values);
         localStorage.setItem('token', res.data.token);
-        navigate('/'); 
+        setSuccess('Login successful!');
+        setError('');
+        setTimeout(() => navigate('/'), 1000);
       } catch (err) {
-        setError('Login failed');
+        setError('Invalid credentials.');
+        setSuccess('');
       }
     },
   });
 
   return (
-    <Box sx={{ maxWidth: 400, mx: 'auto', mt: 5 }}>
-      <Typography variant="h5" gutterBottom>
-        Login
-      </Typography>
-      {error && <Alert severity="error">{error}</Alert>}
-      <form onSubmit={formik.handleSubmit}>
-        <TextField
-          fullWidth
-          margin="normal"
-          label="Email"
-          name="email"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          error={formik.touched.email && !!formik.errors.email}
-          helperText={formik.touched.email && formik.errors.email}
+    <Grid container sx={{ minHeight: '100vh' }}>
+      <Grid item size={8} xs={4}
+        md={4}>
+        <Box
+          component="img"
+          src="https://cdn.pixabay.com/photo/2015/10/01/17/17/car-967387_1280.png"
+          alt="Login car"
+          sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
-        <TextField
-          fullWidth
-          margin="normal"
-          label="Password"
-          name="password"
-          type="password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          error={formik.touched.password && !!formik.errors.password}
-          helperText={formik.touched.password && formik.errors.password}
-        />
-        <Button variant="contained" fullWidth type="submit" sx={{ mt: 2 }}>
-          Login
-        </Button>
-      </form>
-    </Box>
+      </Grid>
+
+      <Grid
+        item size={4}
+        xs={4}
+        md={4}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          p: 4,
+          backgroundColor: '#fff',
+        }}
+      >
+        <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 400 }}>
+          <Typography variant="h4" fontWeight="bold" mb={2}>
+            Sign In to your account
+          </Typography>
+          <Typography variant="body2" color="text.secondary" mb={3}>
+            Enter your details to proceed further
+          </Typography>
+
+          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+          {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
+
+          <form onSubmit={formik.handleSubmit}>
+            <TextField
+              fullWidth
+              label="Email"
+              name="email"
+              margin="normal"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error={formik.touched.email && !!formik.errors.email}
+              helperText={formik.touched.email && formik.errors.email}
+            />
+            <TextField
+              fullWidth
+              label="Password"
+              name="password"
+              type="password"
+              margin="normal"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              error={formik.touched.password && !!formik.errors.password}
+              helperText={formik.touched.password && formik.errors.password}
+            />
+
+            <FormControlLabel
+              control={<Checkbox />}
+              label="Remember me"
+              sx={{ mt: 1 }}
+            />
+
+            <Button type="submit" variant="contained" fullWidth sx={{ mt: 3 }}>
+              Sign in
+            </Button>
+          </form>
+
+          <Typography mt={3} textAlign="center">
+            Don’t have an account? <Link to="/register">Register</Link>
+          </Typography>
+        </Paper>
+      </Grid>
+    </Grid>
   );
 };
 
 export default LoginForm;
+

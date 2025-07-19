@@ -12,13 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('towing_requests', function (Blueprint $table) {
-            $table->id();
+            $table->id();    
             $table->string('customer_name');
-            $table->string('location');
+            $table->string('location')->nullable();
             $table->text('note')->nullable();
-            $table->string('status')->default('pending');
+            $table->double('latitude');
+            $table->double('longitude');
+            $table->enum('status', ['pending', 'assigned', 'completed'])->default('pending');
             $table->timestamps();
-        });
+});
     }
 
     /**

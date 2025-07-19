@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={isLoggedIn() ? <RequestForm /> : <Navigate to="/login" />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={!isLoggedIn() ? <Login /> : <Navigate to="/" />} />
       </Routes>
     </Router>
   );
