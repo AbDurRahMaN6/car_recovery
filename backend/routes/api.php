@@ -17,8 +17,3 @@ Route::middleware('auth:api')->group(function () {
 
 Route::get('/requests', [TowingRequestController::class, 'index']);
 Route::post('/requests', [TowingRequestController::class, 'store']);
-
-// Route::middleware('auth:api')->group(function () {
-//     Route::get('/requests', [TowingRequestController::class, 'index']);
-//     Route::post('/requests', [TowingRequestController::class, 'store']);
-// });
