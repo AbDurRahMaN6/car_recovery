@@ -15,7 +15,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from '../api/axios';
 
-const LoginForm = () => {
+const LoginForm = ({ setLoggedIn }) => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -35,6 +35,7 @@ const LoginForm = () => {
         localStorage.setItem('token', res.data.token);
         setSuccess('Login successful!');
         setError('');
+        setLoggedIn(true); // ✅ SET LOGGED IN
         setTimeout(() => navigate('/'), 1000);
       } catch (err) {
         setError('Invalid credentials.');
@@ -101,11 +102,6 @@ const LoginForm = () => {
               helperText={formik.touched.password && formik.errors.password}
             />
 
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Remember me"
-              sx={{ mt: 1 }}
-            />
 
             <Button type="submit" variant="contained" fullWidth sx={{ mt: 3 }}>
               Sign in
